@@ -1,82 +1,54 @@
-// C++ program to insert element in binary tree
-#include <iostream>
-#include <queue>
+//https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/
+#include<stdio.h>
+#include<stdlib.h>
+#include<iostream>
 using namespace std;
- 
-/* A binary tree node has key, pointer to left child
-and a pointer to right child */
-struct Node {
-    int key;
-    struct Node* left, *right;
+struct node{
+	int data;
+	struct node* left;
+	struct node* right;
 };
- 
-/* function to create a new node of tree and r
-   eturns pointer */
-struct Node* newNode(int key)
+struct node* newnode(int newdata)
 {
-    struct Node* temp = new Node;
-    temp->key = key;
-    temp->left = temp->right = NULL;
-    return temp;
-};
- 
-/* Inorder traversal of a binary tree*/
-void inorder(struct Node* temp)
-{
-    if (!temp)
-        return;
- 
-    inorder(temp->left);
-    cout << temp->key << " ";
-    inorder(temp->right);
+	struct node* temp= new node;
+	temp->data=newdata;
+	temp->left=NULL;
+	temp->right=NULL;
+	return temp;
 }
- 
-/*function to insert element in binary tree */
-void insert(struct Node* temp, int key)
+void inorder(struct node* root)
 {
-    queue<struct Node*> q;
-    q.push(temp);
- 
-    // Do level order traversal until we find
-    // an empty place. 
-    while (!q.empty()) {
-        struct Node* temp = q.front();
-        q.pop();
- 
-        if (!temp->left) {
-            temp->left = newNode(key);
-            break;
-        } else
-            q.push(temp->left);
- 
-        if (!temp->right) {
-            temp->right = newNode(key);
-            break;
-        } else
-            q.push(temp->right);
-    }
+	if(root==NULL)
+	return;
+	inorder(root->left);
+	printf("%d ",root->data);
+	inorder(root->right);
 }
- 
-// Driver code
+
+struct node* insert(struct node* node,int key)
+	{
+		if(node==NULL)
+		return newnode(key);
+		
+		if(key< node->data)
+		node->left=insert(node->left,key);
+		else if(key > node->data)
+		node->right=insert(node->right,key);
+		
+		return node;
+	}
+
 int main()
-{
-    struct Node* root = newNode(10);
-    root->left = newNode(11);
-    root->left->left = newNode(7);
-    root->right = newNode(9);
-    root->right->left = newNode(15);
-    root->right->right = newNode(8);
- 
-    cout << "Inorder traversal before insertion:";
-    inorder(root);
- 
-    int key = 12;
-    insert(root, key);
- 
-    cout << endl;
-    cout << "Inorder traversal after insertion:";
-    inorder(root);
- 
-    return 0;
-}
+	{
+		struct node* root=NULL;
+		root=insert(root,50);
+		insert(root,30);
+		insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+  
+  inorder(root);
+	}
 
